@@ -12,6 +12,8 @@ import {
   message,
 } from 'antd';
 import dayjs from 'dayjs';
+import { firestore } from '../firebase';
+import { collection, addDoc } from '@firebase/firestore';
 
 const { Title } = Typography;
 const { RangePicker } = TimePicker;
@@ -28,7 +30,7 @@ const PlanaDay = () => {
   const [activities, setActivities] = useState([]);
   const [form] = Form.useForm();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     try {
       const newActivity = {
         date: selectedDate.format('YYYY-MM-DD'),
@@ -36,6 +38,10 @@ const PlanaDay = () => {
         name: values.activity,
         priority: values.priority,
       };
+
+      // Save to Firestore
+      const ref = collection(firestore, 'activities');
+      await addDoc(ref, newActivity);
 
       message.success('Activity added!');
       form.resetFields();

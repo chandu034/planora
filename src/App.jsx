@@ -1,11 +1,14 @@
 // src/App.jsx
-import React, { useState } from 'react';
+import React, {useState } from 'react';
 import { Layout } from 'antd';
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 import PlanaDay from './components/PlanaDay';
+import ViewYourDay from './components/ViewYourDay';
+import Pomodoro from './components/Pomodoro';
 
 const { Header, Content } = Layout;
+
 
 function App() {
   const [selectedKey, setSelectedKey] = useState('home');
@@ -19,9 +22,9 @@ function App() {
       case 'tasks':
         return <h1>Your Tasks</h1>;
       case 'pomodoro':
-        return <h1>Pomodoro Timer</h1>;
+        return <Pomodoro />;
       case 'view':
-        return <h1>View Your Day</h1>;
+        return <ViewYourDay/>;
       default:
         return <h1>Welcome!</h1>;
     }
