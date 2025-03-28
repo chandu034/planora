@@ -1,4 +1,3 @@
-// src/components/NavBar.jsx
 import React, { useState } from 'react';
 import {
   HomeOutlined,
@@ -8,6 +7,7 @@ import {
   EyeOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
+import styled from 'styled-components';
 
 const { Sider } = Layout;
 
@@ -27,12 +27,24 @@ const items = [
   getItem('View Your Day', 'view', <EyeOutlined />),
 ];
 
+// ✨ Styled logo
+const Logo = styled.div`
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  color: white;
+  font-size: 28px;
+  padding: 20px;
+  text-align: center;
+  letter-spacing: 2px;
+  user-select: none;
+`;
+
 const NavBar = ({ onMenuClick, selectedKey }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
     <Sider width={220} collapsible collapsed={collapsed} onCollapse={setCollapsed}>
-      <div className="demo-logo-vertical" />
+      {!collapsed && <Logo>Planaro</Logo>}
       <Menu
         theme="dark"
         selectedKeys={[selectedKey]}
