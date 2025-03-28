@@ -3,46 +3,47 @@ import { Typography, DatePicker } from 'antd';
 import styled from 'styled-components';
 import { CalendarOutlined } from '@ant-design/icons';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
-const DateSelectWrapper = styled.div`
+const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  height: 70vh;
+  align-items: center;
+  min-height: 75vh;
+  background: linear-gradient(to right, #f9fbff, #ffffff);
 `;
 
-const DateCard = styled.div`
+const Card = styled.div`
   background: #ffffff;
-  padding: 40px 30px;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  padding: 50px 40px;
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
   text-align: center;
+  width: 340px;
 `;
 
 const Emoji = styled.div`
-  font-size: 2.5rem;
-  margin-bottom: 10px;
+  font-size: 3rem;
+  margin-bottom: 16px;
 `;
 
 const StyledDatePicker = styled(DatePicker)`
-  margin-top: 16px;
-  width: 200px;
+  margin-top: 20px;
+  width: 100%;
 `;
 
 const DateSelector = ({ onSelect }) => {
   return (
-    <DateSelectWrapper>
-      <DateCard>
-        <Emoji>📅</Emoji>
-        <Title level={3}>Plan Your Day</Title>
-        <Title level={5} type="secondary">
-          Select a date to begin
-        </Title>
+    <Wrapper>
+      <Card>
+        <Emoji>📆</Emoji>
+        <Title level={3}>Welcome to Planaro!</Title>
+        <Text type="secondary" style={{ fontSize: '1rem', display: 'block', margin: '10px 0 20px' }}>
+          Let’s start organizing your day. Select a date to begin planning.
+        </Text>
         <StyledDatePicker onChange={onSelect} suffixIcon={<CalendarOutlined />} />
-      </DateCard>
-    </DateSelectWrapper>
+      </Card>
+    </Wrapper>
   );
 };
 
