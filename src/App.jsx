@@ -6,6 +6,7 @@ import Home from './components/Home';
 import PlanaDay from './components/PlanaDay';
 import ViewYourDay from './components/ViewYourDay';
 import Pomodoro from './components/Pomodoro';
+import Tasks from './components/Tasks';
 
 const { Header, Content } = Layout;
 
@@ -20,7 +21,7 @@ function App() {
       case 'plan':
         return <PlanaDay/>;
       case 'tasks':
-        return <h1>Your Tasks</h1>;
+        return <Tasks/>;
       case 'pomodoro':
         return <Pomodoro />;
       case 'view':
