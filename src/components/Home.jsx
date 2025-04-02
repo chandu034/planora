@@ -1,5 +1,9 @@
-import { Button, Progress } from "antd";
+import { useEffect, useState } from "react";
+import { Button, Progress, Typography, message } from "antd";
 import styled from "styled-components";
+import dayjs from "dayjs";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { firestore } from "../firebase";
 
 const HomeContainer = styled.div`
   padding: 40px;
@@ -67,6 +71,39 @@ const TaskItem = styled.li`
 `;
 
 const Home = ({ onClickPlan }) => {
+  const [todaysTasks, setTodaysTasks] = useState([]);
+  const [doneCount, setDoneCount] = useState(0);
+  const today = dayjs().format("YYYY-MM-DD");
+
+  useEffect(() => {
+    const fetchTodayActivities = async () => {
+      try {
+        const ref = collection(firestore, "activities");
+        const q = query(ref, where("date", "==", today));
+        const snapshot = await getDocs(q);
+        const data = snapshot.docs.map((doc) => doc.data());
+
+        const sorted = data.sort((a, b) =>
+          dayjs(a.timeRange[0], "HH:mm").diff(dayjs(b.timeRange[0], "HH:mm"))
+        );
+
+        const completed = sorted.filter((task) => task.status === "done").length;
+
+        setTodaysTasks(sorted);
+        setDoneCount(completed);
+      } catch (err) {
+        console.error("Failed to fetch tasks", err);
+        message.error("Unable to load today's tasks.");
+      }
+    };
+
+    fetchTodayActivities();
+  }, [today]);
+
+  const progress = todaysTasks.length > 0
+    ? Math.round((doneCount / todaysTasks.length) * 100)
+    : 0;
+
   return (
     <HomeContainer>
       {/* Welcome */}
@@ -87,7 +124,7 @@ const Home = ({ onClickPlan }) => {
       <Section>
         <StatsRow>
           <StatBlock>
-            <div><strong>8</strong></div>
+            <div><strong>{doneCount}</strong></div>
             <Label>Tasks Completed</Label>
           </StatBlock>
           <StatBlock>
@@ -109,16 +146,28 @@ const Home = ({ onClickPlan }) => {
 
       {/* Progress */}
       <Section>
-        <Progress percent={60} strokeColor={{ from: "#1890ff", to: "#52c41a" }} />
+        <Title>Progress</Title>
+        <Progress
+          percent={progress}
+          strokeColor={{ from: "#1890ff", to: "#52c41a" }}
+        />
+        <SubText>{doneCount} of {todaysTasks.length} tasks completed</SubText>
       </Section>
 
       {/* Tasks */}
       <Section>
         <Title>Today's Tasks</Title>
         <TaskList>
-          <TaskItem>Complete project demo</TaskItem>
-          <TaskItem>30 min exercise</TaskItem>
-          <TaskItem>Study React</TaskItem>
+          {todaysTasks.length > 0 ? (
+            todaysTasks.map((task, index) => (
+              <TaskItem key={index}>
+                {task.timeRange[0]} - {task.timeRange[1]}: {task.name} ({task.priority})
+                {task.status === "done" && " ✅"}
+              </TaskItem>
+            ))
+          ) : (
+            <SubText>No tasks for today. Plan your day!</SubText>
+          )}
         </TaskList>
       </Section>
     </HomeContainer>
