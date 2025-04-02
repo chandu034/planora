@@ -1,15 +1,38 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Typography, Button, Progress, Space, message } from 'antd';
+import styled from 'styled-components';
 
 const { Title } = Typography;
 
+// Styled container
+const Wrapper = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f9f9f9;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+`;
+
+const TimerBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  gap: 12px;
+`;
+
 const Pomodoro = () => {
-  const initialTime = 25 * 60; // 25 minutes in seconds
+  const initialTime = 25 * 60;
   const [secondsLeft, setSecondsLeft] = useState(initialTime);
   const [isRunning, setIsRunning] = useState(false);
   const timerRef = useRef(null);
 
-  // Format time as mm:ss
   const formatTime = (totalSeconds) => {
     const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
     const secs = String(totalSeconds % 60).padStart(2, '0');
@@ -45,36 +68,44 @@ const Pomodoro = () => {
   };
 
   useEffect(() => {
-    return () => clearInterval(timerRef.current); // cleanup on unmount
+    return () => clearInterval(timerRef.current);
   }, []);
 
   const percent = ((initialTime - secondsLeft) / initialTime) * 100;
 
   return (
-    <div style={{ padding: 30, textAlign: 'center' }}>
-      <Title level={2}>Pomodoro Timer</Title>
-
-      <Progress
-        type="circle"
-        percent={percent}
-        format={() => formatTime(secondsLeft)}
-        strokeColor="#eb2f96"
-        size={250}
-      />
-
-      <Space style={{ marginTop: 30 }}>
-        {!isRunning ? (
-          <Button type="primary" onClick={startTimer}>
-            Start
+    <Wrapper>
+      <Title level={2} style={{ color: '#333', marginBottom: 40 }}>
+        🍅 Pomodoro Timer
+      </Title>
+      <TimerBox>
+        <Progress
+          type="circle"
+          percent={percent}
+          format={() => formatTime(secondsLeft)}
+          strokeColor={{
+            '0%': '#52c41a',
+            '100%': '#eb2f96',
+          }}
+          trailColor="#eee"
+          size={240}
+        />
+        <Buttons>
+          {!isRunning ? (
+            <Button type="primary" size="large" onClick={startTimer}>
+              Start
+            </Button>
+          ) : (
+            <Button size="large" onClick={pauseTimer}>
+              Pause
+            </Button>
+          )}
+          <Button danger size="large" onClick={resetTimer}>
+            Reset
           </Button>
-        ) : (
-          <Button onClick={pauseTimer}>Pause</Button>
-        )}
-        <Button danger onClick={resetTimer}>
-          Reset
-        </Button>
-      </Space>
-    </div>
+        </Buttons>
+      </TimerBox>
+    </Wrapper>
   );
 };
 
