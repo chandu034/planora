@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Tag, Spin, Divider, Button, message } from 'antd';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import { firestore } from '../firebase';
-import { collection, getDocs, updateDoc, doc } from '@firebase/firestore';
+import { collection, getDocs, updateDoc, doc, deleteDoc } from '@firebase/firestore';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 
@@ -15,7 +15,6 @@ const PRIORITY_COLORS = {
   'not important': 'default',
 };
 
-// Styled Components
 const Section = styled.div`
   margin-bottom: 40px;
 `;
@@ -79,7 +78,6 @@ const Tasks = () => {
         ...doc.data()
       }));
 
-      // Filter and group active tasks (not done or not_task)
       const visibleActivities = allActivities.filter(
         (act) => act.status !== 'not_task' && act.status !== 'done'
       );
@@ -127,7 +125,7 @@ const Tasks = () => {
     try {
       const activityRef = doc(firestore, 'activities', activityId);
       await updateDoc(activityRef, { status: newStatus });
-      fetchAllActivities(); // refresh
+      fetchAllActivities();
       if (newStatus === 'task') {
         message.success('Marked as Task!');
       } else if (newStatus === 'done') {
@@ -138,6 +136,18 @@ const Tasks = () => {
     } catch (err) {
       console.error('Error updating task status:', err);
       message.error('Failed to update task status');
+    }
+  };
+
+  const handleDelete = async (activityId) => {
+    try {
+      const activityRef = doc(firestore, 'activities', activityId);
+      await deleteDoc(activityRef);
+      fetchAllActivities();
+      message.success('Task deleted');
+    } catch (err) {
+      console.error('Error deleting task:', err);
+      message.error('Failed to delete task');
     }
   };
 
@@ -173,7 +183,6 @@ const Tasks = () => {
 
                   <ActivityName>{task.name}</ActivityName>
 
-                  {/* If not yet classified */}
                   {!task.status && (
                     <ButtonGroup>
                       <Button
@@ -193,7 +202,6 @@ const Tasks = () => {
                     </ButtonGroup>
                   )}
 
-                  {/* If it's already marked as task */}
                   {task.status === 'task' && (
                     <ButtonGroup>
                       <Button
@@ -210,7 +218,6 @@ const Tasks = () => {
           ))
       )}
 
-      {/* Finished Tasks Section */}
       {Object.keys(finishedTasks).length > 0 && (
         <>
           <Divider />
@@ -228,9 +235,15 @@ const Tasks = () => {
                   <DoneCard key={idx} priority={task.priority}>
                     <InfoRow>
                       <TimeText>{task.timeRange[0]} - {task.timeRange[1]}</TimeText>
-                      <Tag color={PRIORITY_COLORS[task.priority]}>
-                        {(task.priority || 'normal').toUpperCase()}
-                      </Tag>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Tag color={PRIORITY_COLORS[task.priority]}>
+                          {(task.priority || 'normal').toUpperCase()}
+                        </Tag>
+                        <DeleteOutlined
+                          onClick={() => handleDelete(task.id)}
+                          style={{ cursor: 'pointer', color: '#ff4d4f' }}
+                        />
+                      </div>
                     </InfoRow>
                     <ActivityName>{task.name}</ActivityName>
                   </DoneCard>

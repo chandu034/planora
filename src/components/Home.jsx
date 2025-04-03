@@ -7,29 +7,29 @@ import { firestore } from "../firebase";
 
 const HomeContainer = styled.div`
   padding: 40px;
-  background: #f9fbff;
+  background: #f0f4fc;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 30px;
 `;
 
-const Section = styled.div`
-  background: #fff;
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+const Card = styled.div`
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 `;
 
 const WelcomeText = styled.h1`
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 8px;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 10px;
 `;
 
 const SubText = styled.p`
-  font-size: 1rem;
-  color: #555;
+  font-size: 1.1rem;
+  color: #666;
   margin-bottom: 20px;
 `;
 
@@ -37,11 +37,12 @@ const Quote = styled.p`
   font-style: italic;
   font-size: 1.1rem;
   text-align: center;
+  margin-top: 16px;
 `;
 
 const StatsRow = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   text-align: center;
   font-size: 1.2rem;
 `;
@@ -51,14 +52,14 @@ const StatBlock = styled.div`
 `;
 
 const Label = styled.div`
-  color: #666;
-  font-size: 0.9rem;
+  color: #777;
+  font-size: 0.95rem;
 `;
 
 const Title = styled.h2`
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 8px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
 `;
 
 const TaskList = styled.ul`
@@ -67,7 +68,7 @@ const TaskList = styled.ul`
 
 const TaskItem = styled.li`
   font-size: 1rem;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 `;
 
 const Home = ({ onClickPlan }) => {
@@ -106,22 +107,18 @@ const Home = ({ onClickPlan }) => {
 
   return (
     <HomeContainer>
-      {/* Welcome */}
-      <div>
+      <Card>
         <WelcomeText>Welcome back, Chandra! 👋</WelcomeText>
         <SubText>Ready to organize your day and crush your goals?</SubText>
         <Button type="primary" shape="round" size="large" onClick={onClickPlan}>
           Plan Your Day Now
         </Button>
-      </div>
+        <Quote>
+          “Success is the sum of small efforts, repeated day-in and day-out.”
+        </Quote>
+      </Card>
 
-      {/* Quote */}
-      <Quote>
-        “Success is the sum of small efforts, repeated day-in and day-out.”
-      </Quote>
-
-      {/* Stats */}
-      <Section>
+      <Card>
         <StatsRow>
           <StatBlock>
             <div><strong>{doneCount}</strong></div>
@@ -136,26 +133,20 @@ const Home = ({ onClickPlan }) => {
             <Label>Streak Days</Label>
           </StatBlock>
         </StatsRow>
-      </Section>
+      </Card>
 
-      {/* Affirmation */}
-      <Section>
+      <Card>
         <Title>Today's affirmation</Title>
         <SubText>I'm focused, productive, and in control of my day.</SubText>
-      </Section>
-
-      {/* Progress */}
-      <Section>
-        <Title>Progress</Title>
+        <Title style={{ marginTop: 20 }}>{progress}%</Title>
         <Progress
           percent={progress}
           strokeColor={{ from: "#1890ff", to: "#52c41a" }}
         />
-        <SubText>{doneCount} of {todaysTasks.length} tasks completed</SubText>
-      </Section>
+        <SubText style={{ marginTop: 10 }}>{doneCount} of {todaysTasks.length} tasks completed</SubText>
+      </Card>
 
-      {/* Tasks */}
-      <Section>
+      <Card>
         <Title>Today's Tasks</Title>
         <TaskList>
           {todaysTasks.length > 0 ? (
@@ -169,7 +160,7 @@ const Home = ({ onClickPlan }) => {
             <SubText>No tasks for today. Plan your day!</SubText>
           )}
         </TaskList>
-      </Section>
+      </Card>
     </HomeContainer>
   );
 };
