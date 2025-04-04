@@ -95,10 +95,11 @@ const PlanaDay = () => {
         />
       ) : (
         <PlannerForm
-          selectedDate={selectedDate}
-          activities={activities}
-          onAddActivity={handleAddActivity}
-        />
+  selectedDate={selectedDate}
+  activities={activities}
+  onAddActivity={handleAddActivity}
+  onBack={() => setSelectedDate(null)}
+/>
       )}
     </Container>
   );

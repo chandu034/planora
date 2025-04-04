@@ -21,8 +21,10 @@ const PRIORITY_COLORS = {
   'not important': 'default',
 };
 
+// Styled Components
 const FormContainer = styled.div`
   max-width: 400px;
+  margin-bottom: 32px;
 `;
 
 const ActivityCard = styled.div`
@@ -34,7 +36,13 @@ const ActivityCard = styled.div`
   background: #fafafa;
 `;
 
-const PlannerForm = ({ selectedDate, activities, onAddActivity }) => {
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+`;
+
+const PlannarForm = ({ selectedDate, activities, onAddActivity, onBack }) => {
   const [form] = Form.useForm();
 
   const handleSubmit = (values) => {
@@ -47,15 +55,27 @@ const PlannerForm = ({ selectedDate, activities, onAddActivity }) => {
 
       <FormContainer>
         <Form form={form} onFinish={handleSubmit} layout="vertical">
-          <Form.Item name="timeRange" label="Time Range" rules={[{ required: true }]}>
+          <Form.Item
+            name="timeRange"
+            label="Time Range"
+            rules={[{ required: true, message: 'Please select a time range.' }]}
+          >
             <RangePicker format="HH:mm" />
           </Form.Item>
 
-          <Form.Item name="activity" label="Activity Name" rules={[{ required: true }]}>
+          <Form.Item
+            name="activity"
+            label="Activity Name"
+            rules={[{ required: true, message: 'Please enter an activity name.' }]}
+          >
             <Input placeholder="e.g., Study, Gym, Meeting" />
           </Form.Item>
 
-          <Form.Item name="priority" label="Priority" rules={[{ required: true }]}>
+          <Form.Item
+            name="priority"
+            label="Priority"
+            rules={[{ required: true, message: 'Please select a priority.' }]}
+          >
             <Select>
               <Select.Option value="important">Important</Select.Option>
               <Select.Option value="urgent">Urgent</Select.Option>
@@ -65,9 +85,14 @@ const PlannerForm = ({ selectedDate, activities, onAddActivity }) => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Add Activity
-            </Button>
+            <ButtonGroup>
+              <Button type="primary" htmlType="submit">
+                Add Activity
+              </Button>
+              <Button type="default" onClick={onBack}>
+                ← Back to Calendar
+              </Button>
+            </ButtonGroup>
           </Form.Item>
         </Form>
       </FormContainer>
@@ -86,7 +111,10 @@ const PlannerForm = ({ selectedDate, activities, onAddActivity }) => {
             <br />
             {act.name}
             <br />
-            <Tag color={PRIORITY_COLORS[act.priority]} style={{ marginTop: 5 }}>
+            <Tag
+              color={PRIORITY_COLORS[act.priority]}
+              style={{ marginTop: 5 }}
+            >
               {act.priority.toUpperCase()}
             </Tag>
           </ActivityCard>
@@ -96,4 +124,4 @@ const PlannerForm = ({ selectedDate, activities, onAddActivity }) => {
   );
 };
 
-export default PlannerForm;
+export default PlannarForm;
