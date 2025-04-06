@@ -21,7 +21,7 @@ function getItem(label, key, icon) {
 
 const items = [
   getItem('Home', 'home', <HomeOutlined />),
-  getItem('Plan a Day', 'plan', <CalendarOutlined />),
+  getItem('Plan your Day', 'plan', <CalendarOutlined />),
   getItem('Tasks', 'tasks', <CheckCircleOutlined />),
   getItem('Pomodoro Timer', 'pomodoro', <ClockCircleOutlined />),
   getItem('View Your Day', 'view', <EyeOutlined />),
