@@ -71,7 +71,7 @@ const TaskItem = styled.li`
   margin-bottom: 6px;
 `;
 
-const Home = ({ onClickPlan }) => {
+const Home = ({ onClickPlan, onClickView }) => {
   const [todaysTasks, setTodaysTasks] = useState([]);
   const [doneCount, setDoneCount] = useState(0);
   const today = dayjs().format("YYYY-MM-DD");
@@ -101,18 +101,26 @@ const Home = ({ onClickPlan }) => {
     fetchTodayActivities();
   }, [today]);
 
-  const progress = todaysTasks.length > 0
-    ? Math.round((doneCount / todaysTasks.length) * 100)
-    : 0;
+  const progress =
+    todaysTasks.length > 0
+      ? Math.round((doneCount / todaysTasks.length) * 100)
+      : 0;
 
   return (
     <HomeContainer>
       <Card>
         <WelcomeText>Welcome back, Chandra! 👋</WelcomeText>
         <SubText>Ready to organize your day and crush your goals?</SubText>
-        <Button type="primary" shape="round" size="large" onClick={onClickPlan}>
-          Plan Your Day Now
-        </Button>
+
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '16px' }}>
+          <Button type="primary" shape="round" size="large" onClick={onClickPlan}>
+            Plan Your Day Now
+          </Button>
+          <Button type="default" shape="round" size="large" onClick={onClickView}>
+            View Your Day
+          </Button>
+        </div>
+
         <Quote>
           “Success is the sum of small efforts, repeated day-in and day-out.”
         </Quote>
@@ -143,7 +151,9 @@ const Home = ({ onClickPlan }) => {
           percent={progress}
           strokeColor={{ from: "#1890ff", to: "#52c41a" }}
         />
-        <SubText style={{ marginTop: 10 }}>{doneCount} of {todaysTasks.length} tasks completed</SubText>
+        <SubText style={{ marginTop: 10 }}>
+          {doneCount} of {todaysTasks.length} tasks completed
+        </SubText>
       </Card>
 
       <Card>

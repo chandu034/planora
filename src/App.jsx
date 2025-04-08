@@ -17,7 +17,12 @@ function App() {
   const renderContent = () => {
     switch (selectedKey) {
       case 'home':
-        return <Home onClickPlan={() => setSelectedKey('plan')}/>;
+  return (
+    <Home
+      onClickPlan={() => setSelectedKey('plan')}
+      onClickView={() => setSelectedKey('view')}
+    />
+  );
       case 'plan':
         return <PlanaDay/>;
       case 'tasks':
