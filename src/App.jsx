@@ -6,7 +6,7 @@ import Home from './components/Home';
 import PlanaDay from './components/PlanaDay';
 import ViewYourDay from './components/ViewYourDay';
 import Pomodoro from './components/Pomodoro';
-import Tasks from './components/Tasks';
+import Tasks from './components/Tasks/index';
 
 const { Header, Content } = Layout;
 
