@@ -17,7 +17,6 @@ const PRIORITY_COLORS = {
   'not important': '#bfbfbf', // gray
 };
 
-// Styled components
 const Container = styled.div`
   padding: 40px;
   background: #f0f2f5;
@@ -63,7 +62,6 @@ const TimeBlock = styled.div`
   font-size: 0.9rem;
 `;
 
-// Utility functions
 const getMinutesFromTime = (timeStr) => {
   const [hours, minutes] = timeStr.split(':').map(Number);
   return hours * 60 + minutes;

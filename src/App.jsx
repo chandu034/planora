@@ -1,4 +1,4 @@
-// src/App.jsx
+
 import React, {useState } from 'react';
 import { Layout } from 'antd';
 import NavBar from './components/NavBar';
