@@ -20,7 +20,6 @@ const PlanaDay = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [activities, setActivities] = useState([]);
 
-  // 🔄 Fetch existing activities for selected date
   const fetchActivitiesForDate = async (dateString) => {
     try {
       const ref = collection(firestore, 'activities');
@@ -39,7 +38,6 @@ const PlanaDay = () => {
     }
   };
 
-  // ➕ Add activity with conflict detection
   const handleAddActivity = async (values, form) => {
     const [startNew, endNew] = values.timeRange.map(t => t.format('HH:mm'));
     const newActivity = {
@@ -49,7 +47,6 @@ const PlanaDay = () => {
       priority: values.priority,
     };
 
-    // ❌ Conflict Check
     const isConflict = activities.some((act) => {
       const [startOld, endOld] = act.timeRange;
 
